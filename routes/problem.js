@@ -9,6 +9,16 @@ const app = firebase.initializeApp({
 
 const database = app.database();
 
+router.get("/123", async (req, res) => {
+  //const { error } = validateEmailData(req.body);
+  res.send("<h1>helloworld</h1>");
+});
+
+router.put("/456", async (req, res) => {
+  //const { error } = validateEmailData(req.body);
+  res.send("<h1>helloworldx</h1>");
+});
+
 router.get("/:question_id", async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Request-Method", "*");
@@ -32,41 +42,38 @@ router.get("/:question_id", async (req, res) => {
 });
 
 //把Google Sheet的資料輸入到Firebase資料庫。
-router.put("import"),
-  async (req, res) => {
-    /*
-    var ss = SpreadsheetApp.openById(
-      "1EmWraWzyvxt7km7MiPxU6PDTXzy05_jUyvwUqHc5nP0"
-    );
-    var sheet = ss.getSheets()[0];
-    var data = sheet.getDataRange().getValues();
-    var dataToImport = {};
-    for (var i = 1; i < data.length; i++) {
-      var question_id = data[i][0];
-      dataToImport[question_id] = {
-        question_id: question_id,
-        question_text: data[i][2],
-        answer: data[i][3],
-        question_title: data[i][4],
-        department: data[i][5],
-        hashtags: data[i][6],
-        topics_algebra: data[i][7],
-        topics_geometry: data[i][8],
-        topics_trignometry: data[i][9],
-        topics_arithmetic: data[i][10],
-        calculator: data[i][11],
-        answer_type: data[i][12],
-        chart: data[i][13],
-        length: data[i][14],
-      };
-    }
-    var firebaseUrl = "https://nodejs1-jackie.firebaseio.com/";
-    var base = FirebaseApp.getDatabaseByUrl(firebaseUrl);
-    base.setData("", dataToImport);
-*/
-    console.log("in");
-    res.send("success");
-  };
+router.put("/import", async (req, res) => {
+  var ss = SpreadsheetApp.openById(
+    "1EmWraWzyvxt7km7MiPxU6PDTXzy05_jUyvwUqHc5nP0"
+  );
+  var sheet = ss.getSheets()[0];
+  var data = sheet.getDataRange().getValues();
+  var dataToImport = {};
+  for (var i = 1; i < data.length; i++) {
+    var question_id = data[i][0];
+    dataToImport[question_id] = {
+      question_id: question_id,
+      question_text: data[i][2],
+      answer: data[i][3],
+      question_title: data[i][4],
+      department: data[i][5],
+      hashtags: data[i][6],
+      topics_algebra: data[i][7],
+      topics_geometry: data[i][8],
+      topics_trignometry: data[i][9],
+      topics_arithmetic: data[i][10],
+      calculator: data[i][11],
+      answer_type: data[i][12],
+      chart: data[i][13],
+      length: data[i][14],
+    };
+  }
+  var firebaseUrl = "https://nodejs1-jackie.firebaseio.com/";
+  var base = FirebaseApp.getDatabaseByUrl(firebaseUrl);
+  base.setData("dataset", dataToImport);
+
+  res.send("success");
+});
 
 router.get("/preview", async (req, res) => {
   //const { error } = validateEmailData(req.body);
@@ -77,12 +84,12 @@ router.get("/preview", async (req, res) => {
   res.setHeader("Access-Control-Allow-Headers", "*");
 
   database
-    .ref("/")
+    .ref("dataset")
     .once("value", (e) => {
       let dataObj = e.val();
       let html = "";
       for (let i in dataObj) {
-        html = `${html}<div>${dataObj[i]}</div>`;
+        html = `${html}<div>question_text=${dataObj[i][question_text]}, question_title=${dataObj[i][question_title]}, hashtags=${dataObj[i][hashtags]} </div>`;
       }
       console.log(e.val());
       res.end(html);
@@ -91,7 +98,7 @@ router.get("/preview", async (req, res) => {
       firebase.app().delete(); // 讀取完成後刪除 firebase 宣告
     });
 
-  res.send("<h1>helloworld</h1>");
+  res.send(html);
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const errorMiddleware = require("./middleware/error");
 
-const mail = require("./routes/mail");
+const mail = require("./www/mail");
 const index = require("./routes/index");
 const problem = require("./routes/problem");
 var domain = require("domain");
@@ -9,12 +9,12 @@ const app = express();
 
 app.use(express.json());
 
-//app.use("/", index);
 //app.use("/index.html", index);
+app.use("/aaa", index);
 app.use(express.static("www"));
 
 app.use("/api/mail", mail);
-app.use("/api/problem", problem);
+app.use("/problem", problem);
 
 //put in the last one
 app.use(errorMiddleware);
