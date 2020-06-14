@@ -4,13 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "joi": "^14.3.1"
+    "firebase": "^7.15.0",
+    "google-auth-library": "^6.0.1",
+    "joi": "^14.3.1",
+    "nodemailer": "^6.4.8"
+  },
+  "engines": {
+    "node": "12.x"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

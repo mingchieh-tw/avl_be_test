@@ -1,8 +1,7 @@
 <html>
   <body>
     <form id="myForm">
-      email:<input id="email" size="20" /><br /><br />
-      subject:<input id="subject" size="20" /><br /><br />
+      topic:<input id="topic" size="20" /><br /><br />
       content:<textarea id="content"></textarea>
     </form>
     <br />
@@ -10,14 +9,12 @@
   </body>
   <script type="text/javascript">
     function submitData() {
-      let email = document.getElementById("email").value;
-      let subject = document.getElementById("subject").value;
+      let topic = document.getElementById("topic").value;
       let content = document.getElementById("content").value;
 
       let data = {};
 
-      data["email"] = email;
-      data["subject"] = subject;
+      data["topic"] = topic;
       data["content"] = content;
 
       let req = new XMLHttpRequest();
@@ -26,12 +23,10 @@
 
       req.onreadystatechange = function () {
         if (req.readyState == 4) {
-          //根据服务器的响应内容格式处理响应结果
           if (req.getResponseHeader("content-type") === "application/json") {
             var result = JSON.parse(req.responseText);
-            //根据返回结果判断验证码是否正确
             if (result.code === -1) {
-              alert("验证码错误");
+              alert("got an error");
             }
           } else {
             console.log(req.responseText);

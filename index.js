@@ -2,6 +2,7 @@ const errorMiddleware = require("./middleware/error");
 
 const mail = require("./routes/mail");
 const index = require("./routes/index");
+const problem = require("./routes/problem");
 var domain = require("domain");
 const express = require("express");
 const app = express();
@@ -13,11 +14,12 @@ app.use(express.json());
 app.use(express.static("www"));
 
 app.use("/api/mail", mail);
+app.use("/api/problem", problem);
 
 //put in the last one
 app.use(errorMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 process.on("uncaughtException", function (err) {
